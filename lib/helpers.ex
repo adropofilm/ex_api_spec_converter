@@ -52,13 +52,13 @@ defmodule Helpers do
     }
   end
 
-  def fill_template(converted_requests, postman_id) do
+  def fill_template(converted_requests, postman_id, coll_name, coll_descr) do
     %{
       collection: %{
         info: %{
           _postman_id: postman_id,
-          name: "Zego Core API - Docs",
-          description: "API empowering the Zego system",
+          name: coll_name,
+          description: coll_descr,
           schema: "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
         },
         item: converted_requests

@@ -5,11 +5,11 @@ defmodule ExApiSpecConverter do
   Documentation for `ExApiSpecConverter`.
   """
 
-  def convert(filename, doc_id) do
+  def convert(filename, doc_id, coll_name, coll_descr) do
     filename
     |> load_specs
     |> prepare_specs
-    |> fill_template(doc_id)
+    |> fill_template(doc_id, coll_name, coll_descr)
   end
 
   defp prepare_specs(specs) do
