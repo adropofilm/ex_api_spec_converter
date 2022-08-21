@@ -1,0 +1,102 @@
+{
+  "swagger": "2.0",
+  "paths": {
+    "/units/{unit_id}/send-confirmation": {
+      "post": {
+        "tags": [
+          "post"
+        ],
+        "summary": "Send Confirmation Email",
+        "responses": {
+          "500": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            },
+            "description": "Internal server error"
+          },
+          "404": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            },
+            "description": "Not Found - No Email/Phone"
+          },
+          "401": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            },
+            "description": "Unauthorized"
+          },
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/OK"
+            },
+            "description": "OK"
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "operationId": "Units",
+        "description": "Sends the activation email to all residents in the unit that have not activated\n their accounts yet.\n\n#### Required Path Parameters\n|     Field     |   Type |              Description                       |\n| ------------- | ------ | ---------------------------------------------- |\n| **unit_id**   | Number | ID of unit.                                    |"
+      }
+    }
+  },
+  "definitions": {
+    "Error": {
+      "type": "object",
+      "title": "Error",
+      "required": [
+        "success"
+      ],
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "example": false,
+          "description": "failure bool"
+        },
+        "errors": {
+          "description": "errors",
+          "$ref": "#/definitions/Errors"
+        }
+      },
+      "description": "Error"
+    },
+    "Errors": {
+      "type": "object",
+      "title": "Errors",
+      "required": [
+        "details"
+      ],
+      "properties": {
+        "details": {
+          "type": "string",
+          "example": "<Resource> not found",
+          "description": "error msg"
+        }
+      },
+      "description": "Errors"
+    },
+    "OK": {
+      "type": "object",
+      "title": "OK",
+      "required": [
+        "msg",
+        "success"
+      ],
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "example": true,
+          "description": "success bool"
+        },
+        "msg": {
+          "type": "string",
+          "example": "Ok",
+          "description": "success message"
+        }
+      },
+      "description": "OK"
+    }
+  }
+}
