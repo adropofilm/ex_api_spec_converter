@@ -1,5 +1,4 @@
 defmodule Helpers do
-
   def get_paths(%{"paths" => paths}), do: paths |> Enum.into([])
 
   def extract_data(%{"paths" => paths, "definitions" => defs}) do
@@ -15,7 +14,11 @@ defmodule Helpers do
     }
   end
 
-  def build_request(responses, path, method, %{"description" => descr, "summary" => name, "responses" => resp}) do
+  def build_request(responses, path, method, %{
+        "description" => descr,
+        "summary" => name,
+        "responses" => resp
+      }) do
     %{
       name: name,
       request: %{
@@ -48,7 +51,7 @@ defmodule Helpers do
       _postman_previewlanguage: "json",
       header: [],
       cookie: [],
-      body: body |> Poison.encode!
+      body: body |> Poison.encode!()
     }
   end
 
@@ -68,12 +71,14 @@ defmodule Helpers do
 
   defp generate_resp(request_list, responses, response_list \\ [])
   defp generate_resp([], _responses, response_list), do: response_list
-  defp generate_resp([{code, body}|tail], responses, response_list) do
-    code_int = code |> String.to_integer
+
+  defp generate_resp([{code, body} | tail], responses, response_list) do
+    code_int = code |> String.to_integer()
 
     if has_body?(body) do
       if code_int in 300..599 do
-        %{"description" => descr} = body # TODO add schema key in future
+        # TODO add schema key in future
+        %{"description" => descr} = body
 
         response =
           descr
@@ -81,18 +86,16 @@ defmodule Helpers do
           |> build_err_schema
           |> create_response(descr, code_int)
 
-          generate_resp(tail, responses, [response | response_list])
+        generate_resp(tail, responses, [response | response_list])
       else
         %{"description" => descr, "schema" => %{"$ref" => ref}} = body
 
-        response =
-          create_response(responses[schema_name(ref)], descr, code_int)
+        response = create_response(responses[schema_name(ref)], descr, code_int)
 
         generate_resp(tail, responses, [response | response_list])
       end
     else
-      response =
-        create_response(%{}, "No content", code_int)
+      response = create_response(%{}, "No content", code_int)
 
       generate_resp(tail, responses, [response | response_list])
     end
@@ -114,13 +117,13 @@ defmodule Helpers do
   end
 
   defp create_path(path) do
-    [_slash|tail] = String.split(path, "/")
-    ["api"|tail]
+    [_slash | tail] = String.split(path, "/")
+    ["api" | tail]
   end
 
   # TODO remove after maps used for response descriptions
   defp get_msg(msg) do
-    [_status|tail] = String.split(msg, " - ")
+    [_status | tail] = String.split(msg, " - ")
     List.to_string(tail)
   end
 
@@ -138,5 +141,4 @@ defmodule Helpers do
     |> File.read!()
     |> Poison.decode!()
   end
-
 end

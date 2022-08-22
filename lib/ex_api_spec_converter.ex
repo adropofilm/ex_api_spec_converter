@@ -34,7 +34,8 @@ defmodule ExApiSpecConverter do
   end
 
   def prepare_schemas(completed \\ %{}, schemas)
-  def prepare_schemas(completed, [{name, body}|t]) do
+
+  def prepare_schemas(completed, [{name, body} | t]) do
     cond do
       body["type"] == "object" ->
         with {schema_name, body} <- build_response(name, body["properties"], completed) do
@@ -42,6 +43,7 @@ defmodule ExApiSpecConverter do
           |> Map.put(schema_name, body)
           |> prepare_schemas(t)
         end
+
       body["type"] == "array" ->
         if Map.has_key?(body["items"], "$ref") do
           ref_name = schema_name(body["items"]["$ref"])
@@ -56,6 +58,7 @@ defmodule ExApiSpecConverter do
         end
     end
   end
+
   def prepare_schemas(completed, []), do: completed
 
   def build_response(name, properties, completed) do
@@ -67,24 +70,30 @@ defmodule ExApiSpecConverter do
   end
 
   def order_schemas(schemas, objs \\ [], ref_objs \\ [], arrays \\ [])
-  def order_schemas([{_name, body} = h|t], objs, ref_objs, arrays) do
+
+  def order_schemas([{_name, body} = h | t], objs, ref_objs, arrays) do
     cond do
       body["type"] == "object" and !has_ref?(body["properties"]) ->
-        order_schemas(t, [h|objs], ref_objs, arrays)
+        order_schemas(t, [h | objs], ref_objs, arrays)
+
       body["type"] == "object" and has_ref?(body["properties"]) ->
-        order_schemas(t, objs, [h|ref_objs], arrays)
+        order_schemas(t, objs, [h | ref_objs], arrays)
+
       body["type"] == "array" ->
-        order_schemas(t, objs, ref_objs, [h|arrays])
+        order_schemas(t, objs, ref_objs, [h | arrays])
     end
   end
+
   def order_schemas([], objs, ref_objs, arrays) do
     {objs, ref_objs, arrays}
   end
 
   def populate_properties(name, schema, prop_names, completed, refs \\ %{}, body \\ %{})
-  def populate_properties(name, schema, [h|t], completed, refs, body) do
+
+  def populate_properties(name, schema, [h | t], completed, refs, body) do
     if Map.has_key?(schema[h], "$ref") do
       schema_name = schema_name(schema[h]["$ref"])
+
       if Map.has_key?(completed, schema_name) do
         updated_body = Map.put(body, h, completed[schema_name])
         populate_properties(h, schema, t, completed, refs, updated_body)
@@ -97,24 +106,28 @@ defmodule ExApiSpecConverter do
       populate_properties(name, schema, t, completed, refs, updated_body)
     end
   end
+
   def populate_properties(_name, _schema, [], _completed, refs, body) do
     {body, refs}
   end
 
   defp convert_requests(responses, requests, converted_requests \\ %{})
+
   defp convert_requests(responses, [{path_str, raw_requests} | tail], converted_requests) do
     updated_requests =
       path_str
       |> map_request(raw_requests, responses)
       |> add_to_folder(get_folder_name(raw_requests), converted_requests)
+
     convert_requests(responses, tail, updated_requests)
   end
+
   defp convert_requests(_responses, [], converted_requests), do: converted_requests
 
   defp convert_folders(converted_requests) do
-    Enum.map converted_requests, fn {folder_name, requests} ->
+    Enum.map(converted_requests, fn {folder_name, requests} ->
       create_folder(requests, folder_name)
-    end
+    end)
   end
 
   defp map_request(path, request_map, responses) do
@@ -122,7 +135,7 @@ defmodule ExApiSpecConverter do
     |> Stream.map(fn {method, request_body} ->
       build_request(responses, path, method, request_body)
     end)
-    |> Enum.to_list
+    |> Enum.to_list()
   end
 
   defp get_folder_name(request_map) do
@@ -134,6 +147,7 @@ defmodule ExApiSpecConverter do
     case Map.has_key?(converted_requests, folder_name) do
       true ->
         Map.put(converted_requests, folder_name, request_list ++ converted_requests[folder_name])
+
       false ->
         Map.put(converted_requests, folder_name, request_list)
     end

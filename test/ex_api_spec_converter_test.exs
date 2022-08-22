@@ -15,7 +15,9 @@ defmodule ExApiSpecConverterTest do
     assert converted.collection.info._postman_id === @postman_id
     assert converted.collection.info.name === @coll_name
     assert converted.collection.info.description === @coll_descr
-    assert converted.collection.info.schema === "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+
+    assert converted.collection.info.schema ===
+             "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 
     assert Enum.count(converted.collection.item) === 1
 
@@ -28,16 +30,25 @@ defmodule ExApiSpecConverterTest do
     endpoint = hd(unit_item.item)
     assert endpoint.name === "Send Confirmation Email"
     assert endpoint.request.body === %{mode: "raw"}
-    assert endpoint.request.description =~ "Sends the activation email to all residents in the unit"
+
+    assert endpoint.request.description =~
+             "Sends the activation email to all residents in the unit"
+
     assert endpoint.request.method === "POST"
-    assert endpoint.request.url.raw === "https://api-stage.zego.io/api/units/{unit_id}/send-confirmation"
+
+    assert endpoint.request.url.raw ===
+             "https://api-stage.zego.io/api/units/{unit_id}/send-confirmation"
 
     assert Enum.count(endpoint.response) === 4
   end
 
   test "Make sure sorting docs alphabetically works properly" do
     input = %{
-      "The Killers" => [%{name: "Mr. Brigtside"}, %{name: "Somebody Told Me"} , %{name: "Midnight Show"}],
+      "The Killers" => [
+        %{name: "Mr. Brigtside"},
+        %{name: "Somebody Told Me"},
+        %{name: "Midnight Show"}
+      ],
       "Jackson Five" => [%{name: "abc"}, %{name: "easy as 123"}],
       "Bob Esponga" => [%{name: "Sandy"}, %{name: "Patrick"}, %{name: "Krabs"}, %{name: "Gary"}]
     }
