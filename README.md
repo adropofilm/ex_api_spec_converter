@@ -19,3 +19,14 @@ Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_do
 and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
 be found at <https://hexdocs.pm/ex_api_spec_converter>.
 
+
+TODO:
+- add env template to converted json
+- add documentation regarding swagger_path attributes mapping to postman collections
+- publish project
+
+
+assumes
+- you have an already existing postman collection
+- you used phoenix_swagger to generate your spects:
+    * 

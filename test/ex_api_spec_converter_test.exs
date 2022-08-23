@@ -3,7 +3,7 @@ defmodule ExApiSpecConverterTest do
 
   doctest ExApiSpecConverter
 
-  @api_specs_path Path.join(~w(. test swagger.json))
+  @api_specs_path Path.join(~w(. test resources swagger.json))
 
   @postman_id "1"
   @coll_name "Hi, this is the name"

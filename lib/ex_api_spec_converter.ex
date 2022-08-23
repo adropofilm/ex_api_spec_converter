@@ -5,8 +5,16 @@ defmodule ExApiSpecConverter do
   Documentation for `ExApiSpecConverter`.
   """
 
-  def convert(filename, doc_id, coll_name, coll_descr) do
-    filename
+  @doc """
+  Says hello to the given `name`.
+
+  Returns `:ok`.
+
+  ## Examples included in README.md
+  """
+
+  def convert(filepath, doc_id, coll_name, coll_descr) do
+    filepath
     |> load_specs
     |> prepare_specs
     |> fill_template(doc_id, coll_name, coll_descr)

@@ -141,4 +141,22 @@ defmodule Helpers do
     |> File.read!()
     |> Poison.decode!()
   end
+
+  def parse_response({:ok, %HTTPoison.Response{body: body, status_code: 200}}, resource) do
+    %{^resource => resource} = Poison.decode!(body)
+    {:ok, resource}
+  end
+
+  def parse_response({:ok, %HTTPoison.Response{body: body, status_code: 400..599}}, _resource) do
+    %{"error" => msg} = Poison.decode!(body)
+    {:error, msg}
+  end
+
+  def parse_response({:ok, %HTTPoison.Response{body: body}}) do
+    {:error, Poison.decode!(body)}
+  end
+
+  def parse_response({:error, %HTTPoison.Error{reason: reason}}) do
+    {:error, reason}
+  end
 end

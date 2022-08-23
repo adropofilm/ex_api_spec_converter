@@ -1,0 +1,102 @@
+{
+  "swagger": "2.0",
+  "paths": {
+    "/recipes/{recipe_id}/send-confirmation": {
+      "post": {
+        "tags": [
+          "post"
+        ],
+        "summary": "Send Confirmation Email",
+        "responses": {
+          "500": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            },
+            "description": "Internal server error"
+          },
+          "404": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            },
+            "description": "Not Found - No Email/Phone"
+          },
+          "401": {
+            "schema": {
+              "$ref": "#/definitions/Error"
+            },
+            "description": "Unauthorized"
+          },
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/OK"
+            },
+            "description": "OK"
+          }
+        },
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "operationId": "Recipes",
+        "description": "Sends the activation email to all chefs"
+      }
+    }
+  },
+  "definitions": {
+    "Error": {
+      "type": "object",
+      "title": "Error",
+      "required": [
+        "success"
+      ],
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "example": false,
+          "description": "failure bool"
+        },
+        "errors": {
+          "description": "errors",
+          "$ref": "#/definitions/Errors"
+        }
+      },
+      "description": "Error"
+    },
+    "Errors": {
+      "type": "object",
+      "title": "Errors",
+      "required": [
+        "details"
+      ],
+      "properties": {
+        "details": {
+          "type": "string",
+          "example": "<Resource> not found",
+          "description": "error msg"
+        }
+      },
+      "description": "Errors"
+    },
+    "OK": {
+      "type": "object",
+      "title": "OK",
+      "required": [
+        "msg",
+        "success"
+      ],
+      "properties": {
+        "success": {
+          "type": "boolean",
+          "example": true,
+          "description": "success bool"
+        },
+        "msg": {
+          "type": "string",
+          "example": "Ok",
+          "description": "success message"
+        }
+      },
+      "description": "OK"
+    }
+  }
+}
