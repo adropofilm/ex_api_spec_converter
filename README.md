@@ -1,6 +1,6 @@
 # ExApiSpecConverter
 
-Elixir Based API Spec Converter that can be used with `phoenix_swagger` to generate in-line documentation to host on Postman Docs.
+Elixir Based API Spec Converter that can be used with [phoenix_swagger](https://hexdocs.pm/phoenix_swagger/getting-started.html) to generate in-line documentation to host on Postman Docs.
 
 ## Installation
 
