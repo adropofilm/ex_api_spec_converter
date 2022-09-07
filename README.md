@@ -1,11 +1,10 @@
 # ExApiSpecConverter
 
-Elixir Based API Spec Converter that can be used with [phoenix_swagger](https://hexdocs.pm/phoenix_swagger/getting-started.html) to generate in-line documentation. You can also use it push your converted Postman 2 specs to Postman Docs. :) 
+Elixir Based API Spec Converter that can be used with [phoenix_swagger](https://hexdocs.pm/phoenix_swagger/getting-started.html) to generate Postman collections for your API. You can also use it to extract in-line documentation to host on [Postman](https://learning.postman.com/docs/publishing-your-api/documenting-your-api/). :)
 
 ## Installation
-
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `ex_api_spec_converter` to your list of dependencies in `mix.exs`:
+The package can be installed by adding `ex_api_spec_converter` to your list of
+dependencies in `mix.exs`:
 
 ```elixir
 def deps do
@@ -15,10 +14,17 @@ def deps do
 end
 ```
 
-**Assumptions**:
-1. You're using [phoenix_swagger](https://hexdocs.pm/phoenix_swagger/getting-started.html) to generate your swagger 2 files and in-line documentation like so in your controllers:
-
+**Usage**
+Convert your specs like so:
+``` elixir
+   ExApiSpecConverter.convert(filepath, doc_id, coll_name, coll_descr)
 ```
+Output will be Postman V2 Collection specs.
+
+**Assumptions**:
+1. You're using [phoenix_swagger](https://hexdocs.pm/phoenix_swagger/getting-started.html) to generate your swagger 2 API specs and in-line documentation like so in your controllers:
+
+``` elixir
 def swagger_definitions do
     %{
       Book: swagger_schema do
@@ -62,7 +68,3 @@ def swagger_definitions do
 1. Postman collection folders should be defined in `swagger_path` > `operation_id`
 2. Postman request description is defined in `swagger_path` > `description`
 3. Postman request name is defined in `swagger_path` > `summary`
-
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/ex_api_spec_converter>.
