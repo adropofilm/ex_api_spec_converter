@@ -28,12 +28,9 @@ defmodule Helpers do
           mode: "raw"
         },
         url: %{
-          raw: "https://api-stage.zego.io/api#{path}",
+          raw: "{{api_host}}#{path}",
           protocol: "https",
           host: [
-            "api-stage",
-            "zego",
-            "io"
           ],
           path: create_path(path)
         },

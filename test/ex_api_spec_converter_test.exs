@@ -37,7 +37,7 @@ defmodule ExApiSpecConverterTest do
     assert endpoint.request.method === "POST"
 
     assert endpoint.request.url.raw ===
-             "https://api-stage.zego.io/api/units/{unit_id}/send-confirmation"
+             "{{api_host}}/units/{unit_id}/send-confirmation"
 
     assert Enum.count(endpoint.response) === 4
   end
